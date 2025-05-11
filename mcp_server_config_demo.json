@@ -1,0 +1,16 @@
+{
+    "mcpServers": {
+      "MiniMax": {
+        "command": "uvx",
+        "args": [
+          "minimax-mcp"
+        ],
+        "env": {
+          "MINIMAX_API_KEY": "XXXX",
+          "MINIMAX_MCP_BASE_PATH": "~/Desktop",
+          "MINIMAX_API_HOST": "https://api.minimax.chat",
+          "MINIMAX_API_RESOURCE_MODE": "url"
+        }
+      }
+    }
+  }

@@ -31,27 +31,29 @@
   </a>
 </div>
 
+<p align="center" style="line-height: 1.5; font-size: 18px; margin: 4px auto; text-decoration: underline;"><a href="README.md">English Version</a></p>
+
 <p align="center">
-  Official MiniMax Model Context Protocol (MCP) server that enables interaction with powerful Text to Speech and video/image generation APIs. This server allows MCP clients like <a href="https://www.anthropic.com/claude">Claude Desktop</a>, <a href="https://www.cursor.so">Cursor</a>, <a href="https://codeium.com/windsurf">Windsurf</a>, <a href="https://github.com/openai/openai-agents-python">OpenAI Agents</a> and others to generate speech, clone voices, generate video, generate image and more.
+  MiniMax官方模型上下文协议(MCP)服务器，支持与强大的文本转语音和视频/图像生成API交互。允许MCP客户端如<a href="https://www.anthropic.com/claude">Claude Desktop</a>、<a href="https://www.cursor.so">Cursor</a>、<a href="https://codeium.com/windsurf">Windsurf</a>、<a href="https://github.com/openai/openai-agents-python">OpenAI Agents</a>等生成语音、克隆声音、生成视频、生成图像等功能。
 </p>
 
 ## Documentation
-- [中文文档](README-CN.md)
-- [MiniMax-MCP-JS](https://github.com/MiniMax-AI/MiniMax-MCP-JS) - Official JavaScript implementation of MiniMax MCP
+- [English Documentation](README.md)
+- [MiniMax-MCP-JS](https://github.com/MiniMax-AI/MiniMax-MCP-JS) - MiniMax MCP的官方JavaScript版本
 
-## Quickstart with MCP Client
-1. Get your API key from [MiniMax](https://www.minimax.io/platform/user-center/basic-information/interface-key). 
-2. Install `uv` (Python package manager), install with `curl -LsSf https://astral.sh/uv/install.sh | sh` or see the `uv` [repo](https://github.com/astral-sh/uv) for additional install methods.
-3. **Important**: The API host and key vary by region and must match; otherwise, you'll encounter an `Invalid API key` error.
+## 快速开始使用 MCP 客户端
+1. 从[MiniMax国内开放平台](https://platform.minimaxi.com/user-center/basic-information/interface-key)｜[MiniMax国际开放平台](https://www.minimax.io/platform/user-center/basic-information/interface-key)获取你的 API 密钥。
+2. 安装`uv`（Python包管理器），使用`curl -LsSf https://astral.sh/uv/install.sh | sh`安装或查看`uv` [仓库](https://github.com/astral-sh/uv)获取其他安装方法。
+3. **重要提示: API的服务器地址和密钥在不同区域有所不同**，两者需要匹配，否则会有 `invalid api key` 的错误
 
-|Region| Global  | Mainland  |
+|地区| 国际  | 国内  |
 |:--|:-----|:-----|
-|MINIMAX_API_KEY| go get from [MiniMax Global](https://www.minimax.io/platform/user-center/basic-information/interface-key) | go get from [MiniMax](https://platform.minimaxi.com/user-center/basic-information/interface-key) |
-|MINIMAX_API_HOST| https://api.minimaxi.chat (note the extra **"i"**) | https://api.minimax.chat |
+|MINIMAX_API_KEY| 获取密钥 [MiniMax国际版](https://www.minimax.io/platform/user-center/basic-information/interface-key) | 获取密钥 [MiniMax](https://platform.minimaxi.com/user-center/basic-information/interface-key) |
+|MINIMAX_API_HOST| https://api.minimaxi.chat （请注意额外的 **"i"** 字母） | https://api.minimax.chat |
 
 
 ### Claude Desktop
-Go to `Claude > Settings > Developer > Edit Config > claude_desktop_config.json` to include the following:
+前往`Claude > Settings > Developer > Edit Config > claude_desktop_config.json`包含以下内容：
 
 ```
 {
@@ -59,86 +61,85 @@ Go to `Claude > Settings > Developer > Edit Config > claude_desktop_config.json`
     "MiniMax": {
       "command": "uvx",
       "args": [
-        "minimax-mcp",
-        "-y"
+        "minimax-mcp"
       ],
       "env": {
-        "MINIMAX_API_KEY": "insert-your-api-key-here",
-        "MINIMAX_MCP_BASE_PATH": "local-output-dir-path, such as /User/xxx/Desktop",
-        "MINIMAX_API_HOST": "api host, https://api.minimaxi.chat|https://api.minimax.chat",
-        "MINIMAX_API_RESOURCE_MODE": "optional, [url|local], url is default, audio/image/video are downloaded locally or provided in URL format"
+        "MINIMAX_API_KEY": "填写你的API密钥",
+        "MINIMAX_MCP_BASE_PATH": "本地输出目录路径，如/User/xxx/Desktop",
+        "MINIMAX_API_HOST": "填写API Host, https://api.minimax.chat 或 https://api.minimaxi.chat",
+        "MINIMAX_API_RESOURCE_MODE": "可选配置，资源生成后的提供方式, 可选项为 [url|local], 默认为 url"
       }
     }
   }
 }
-
 ```
-⚠️ Warning: The API key needs to match the host. If an error "API Error: invalid api key" occurs, please check your api host:
-- Global Host：`https://api.minimaxi.chat` (note the extra "i")
-- Mainland Host：`https://api.minimax.chat`
 
-If you're using Windows, you will have to enable "Developer Mode" in Claude Desktop to use the MCP server. Click "Help" in the hamburger menu in the top left and select "Enable Developer Mode".
+
+⚠️ 注意：API Key需要与Host匹配。如果出现“API Error: invalid api key”错误，请检查您的API Host：
+- 国际版Host：`https://api.minimaxi.chat`（请注意额外的 **"i"** 字母）
+- 国内版Host：`https://api.minimax.chat` 
+
+如果你使用Windows，你需要在Claude Desktop中启用"开发者模式"才能使用MCP服务器。点击左上角汉堡菜单中的"Help"，然后选择"Enable Developer Mode"。
 
 
 ### Cursor
-Go to `Cursor -> Preferences -> Cursor Settings -> MCP -> Add new global MCP Server` to add above config.
+前往`Cursor -> Preferences -> Cursor Settings -> MCP -> Add new global MCP Server`添加上述配置。
 
-That's it. Your MCP client can now interact with MiniMax through these tools:
+你的MCP客户端现在可以通过Claude Desktop和Cursor等这些工具与MiniMax交互：
 
 ## Transport
-We support two transport types: stdio and sse.
+我们支持两种传输方式: stdio and sse.
 | stdio  | SSE  |
 |:-----|:-----|
-| Run locally | Can be deployed locally or in the cloud |
-| Communication through `stdout` | Communication through `network` |
-| Input: Supports processing `local files` or valid `URL` resources | Input: When deployed in the cloud, it is recommended to use `URL` for input |
+| 在本地部署运行 | 本地或云端部署均可  |
+|通过 stdout 进行通信| 通过网络通信|
+|输入：支持处理本地文件，或有效的URL资源| 输入: 若部署在云端，建议使用URL进行输入|
 
-## Available Tools
-| tool  | description  |
+## 可用方法
+| 方法  | 描述  |
 |-|-|
-|`text_to_audio`|Convert text to audio with a given voice|
-|`list_voices`|List all voices available|
-|`voice_clone`|Clone a voice using provided audio files|
-|`generate_video`|Generate a video from a prompt|
-|`text_to_image`|Generate a image from a prompt|
-|`query_video_generation`|Query the result of video generation task|
+|`text_to_audio`|使用指定音色将文本生成音频|
+|`list_voices`|查询所有可用音色|
+|`voice_clone`|根据指定音频文件克隆音色|
+|`generate_video`|根据指定 prompt 生成视频|
+|`text_to_image`|根据指定 prompt 生成图片|
 
 ## FAQ
 ### 1. invalid api key
-Please ensure your API key and API host are regionally aligned
-|Region| Global  | Mainland  |
+请检查你获取的 API Key 和填写的 API Host 是否是同一地区的：
+|地区| 国际  | 国内  |
 |:--|:-----|:-----|
-|MINIMAX_API_KEY| go get from [MiniMax Global](https://www.minimax.io/platform/user-center/basic-information/interface-key) | go get from [MiniMax](https://platform.minimaxi.com/user-center/basic-information/interface-key) |
-|MINIMAX_API_HOST| https://api.minimaxi.chat (note the extra **"i"**) | https://api.minimax.chat |
+|MINIMAX_API_KEY| 获取密钥 [MiniMax国际版](https://www.minimax.io/platform/user-center/basic-information/interface-key) | 获取密钥 [MiniMax](https://platform.minimaxi.com/user-center/basic-information/interface-key) |
+|MINIMAX_API_HOST| https://api.minimaxi.chat （请注意额外的 **"i"** 字母） | https://api.minimax.chat |
 
 ### 2. spawn uvx ENOENT
-Please confirm its absolute path by running this command in your terminal:
+请在你的终端输入一下命令，查看uvx命令的绝对路径：
 ```sh
 which uvx
 ```
-Once you obtain the absolute path (e.g., /usr/local/bin/uvx), update your configuration to use that path (e.g., "command": "/usr/local/bin/uvx"). 
+如果得到如下的输出 (如：/usr/local/bin/uvx)，更新mcp配置 ("command": "/usr/local/bin/uvx"). 
 
-### 3. How to use `generate_video` in async-mode
-Define completion rules before starting:
+### 3. 如何用 `generate_video` 工具异步生成视频
+在对话前设置一些规则:
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/cursor_rule2.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
-Alternatively, these rules can be configured in your IDE settings (e.g., Cursor):
+或者放到本地客户端的规则中 (以 Cursor 为例):
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/cursor_video_rule.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
 
 
-## Example usage
+## 使用示例
 
-⚠️ Warning: Using these tools may incur costs.
+⚠️ 注意：使用这些工具可能会产生费用。
 
-### 1. broadcast a segment of the evening news
+### 1. 播报晚间新闻片段
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/Snipaste_2025-04-09_20-07-53.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
 
-### 2. clone a voice
+### 2. 克隆声音
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/Snipaste_2025-04-09_19-45-13.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
 
-### 3. generate a video
+### 3. 生成视频
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/Snipaste_2025-04-09_19-58-52.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/Snipaste_2025-04-09_19-59-43.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle; "/>
 
-### 4. generate images
+### 4. 生成图像
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/gen_image.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle;"/>
 <img src="https://public-cdn-video-data-algeng.oss-cn-wulanchabu.aliyuncs.com/gen_image1.png?x-oss-process=image/resize,p_50/format,webp" style="display: inline-block; vertical-align: middle; "/>

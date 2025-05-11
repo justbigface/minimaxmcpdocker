@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  minimax-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: minimax-mcp:latest
+    container_name: minimax-mcp
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+    environment:
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+      - MINIMAX_MCP_BASE_PATH=/data
+      - MINIMAX_API_HOST=${MINIMAX_API_HOST:-https://api.minimax.chat}
+      - MINIMAX_API_RESOURCE_MODE=${MINIMAX_API_RESOURCE_MODE:-url}
