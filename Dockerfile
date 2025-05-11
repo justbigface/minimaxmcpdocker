@@ -2,12 +2,31 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# 更新系统并安装必要工具
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# 更新pip并设置缓存目录
+RUN pip install --upgrade pip setuptools wheel
+
 # 安装依赖
 COPY pyproject.toml setup.py ./
 COPY minimax_mcp ./minimax_mcp/
 
-# 安装项目
-RUN pip install --no-cache-dir .
+# 设置pip配置，添加阿里云镜像源和重试机制
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ \
+    && pip config set global.trusted-host mirrors.aliyun.com \
+    && pip config set global.timeout 120 \
+    && pip config set global.retries 5
+
+# 清理pip缓存
+RUN pip cache purge
+
+# 安装项目，添加重试和超时参数
+RUN pip install --no-cache-dir --timeout 100 --retries 5 . || \
+    (pip cache purge && pip install --no-cache-dir --timeout 100 --retries 5 .)
 
 # 创建配置目录
 RUN mkdir -p /config
