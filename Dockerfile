@@ -11,38 +11,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # 更新pip并设置缓存目录
 RUN pip install --upgrade pip setuptools wheel
 
-# 安装依赖
+# 复制项目文件
 COPY pyproject.toml setup.py ./
 COPY minimax_mcp ./minimax_mcp/
 
-# 设置pip配置，使用稳定的国内镜像源和优化连接参数
+# 设置pip配置，使用稳定的国内镜像源
 RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ \
     && pip config set global.trusted-host "mirrors.aliyun.com" \
     && pip config set global.timeout 300 \
-    && pip config set global.retries 15 \
-    && pip config set global.default-timeout 300 \
-    && pip config set install.prefer-binary true \
-    && pip config set global.no-cache-dir true
+    && pip config set global.retries 15
 
-# 清理pip缓存
-RUN pip cache purge
+# 安装项目依赖
+RUN pip install --no-cache-dir -e . \
+    || (sleep 5 && pip install --no-cache-dir -e . -i https://pypi.tuna.tsinghua.edu.cn/simple/) \
+    || (sleep 5 && pip install --no-cache-dir -e . -i https://mirrors.aliyun.com/pypi/simple/)
 
-# 先安装基础工具，确保安装环境正常
-RUN pip install --no-cache-dir --timeout 300 --retries 15 setuptools wheel \
-    || (sleep 5 && pip install --no-cache-dir --timeout 300 --retries 15 -i https://pypi.tuna.tsinghua.edu.cn/simple/ setuptools wheel)
-
-# 分批安装关键依赖，提高成功率
-RUN pip install --no-cache-dir --timeout 300 --retries 15 pydantic \
-    || (sleep 5 && pip install --no-cache-dir --timeout 300 --retries 15 -i https://pypi.tuna.tsinghua.edu.cn/simple/ pydantic)
-
-RUN pip install --no-cache-dir --timeout 300 --retries 15 fastapi uvicorn httpx \
-    || (sleep 5 && pip install --no-cache-dir --timeout 300 --retries 15 -i https://pypi.tuna.tsinghua.edu.cn/simple/ fastapi uvicorn httpx)
-
-# 安装项目，使用更稳定的安装策略
-RUN pip install --no-cache-dir --timeout 300 --retries 15 . \
-    || (sleep 10 && pip install --no-cache-dir --timeout 300 --retries 15 -i https://pypi.tuna.tsinghua.edu.cn/simple/ .) \
-    || (sleep 10 && pip install --no-cache-dir --timeout 300 --retries 15 -i https://mirrors.aliyun.com/pypi/simple/ .) \
-    || (sleep 10 && pip install --no-cache-dir --timeout 300 --retries 15 --no-deps .)
+# 验证安装
+RUN python -c "import minimax_mcp; print('MiniMax-MCP installation successful!')"
 
 # 创建配置目录
 RUN mkdir -p /config
